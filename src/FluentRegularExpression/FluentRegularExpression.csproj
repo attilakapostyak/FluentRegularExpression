@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>FluentRegularExpression</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Attila Kapostyak</Authors>
+	<PackageTags>fluent verbal regular expression expressions regex regexp declarative build pattern</PackageTags>
+	<PackageLicenseFile>License.txt</PackageLicenseFile>  
+    <Description>Simplify regular expression creation in .NET</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Title>Fluent Regular Expression</Title>
+    <RepositoryUrl>https://github.com/attilakapostyak/FluentRegularExpression</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CharacterClasses\**" />
+    <EmbeddedResource Remove="CharacterClasses\**" />
+    <None Remove="CharacterClasses\**" />
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="License.txt">
+      <Pack>true</Pack>
+      <PackagePath></PackagePath>
+      <Visible>True</Visible>
+    </None>
+  </ItemGroup>
+
+</Project>

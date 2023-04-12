@@ -1,0 +1,46 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: dotnet
+
+on:
+  push:
+    branches: [ "draft1" ]
+  pull_request:
+    branches: [ "draft1" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET    
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      working-directory: ./src
+      run: dotnet restore
+    - name: Build
+      working-directory: ./src
+      run: dotnet build --no-restore
+    - name: Test
+      working-directory: ./src
+      run: dotnet test --no-build --verbosity normal
+    - name: Test Report
+      working-directory: ./src
+      run: dotnet test --no-build --verbosity normal
+    - name: Create Nuget Package
+      working-directory: ./src
+      run: dotnet pack -c Release
+    - name: Retrieve Nuget Package file path
+      working-directory: ./src
+      run: echo "NUPKG_PATH=$(find . -name *.nupkg -print -quit)" >> $GITHUB_OUTPUT
+      id: nupkgpath
+    - name: Publish Nuget Package
+      id: publishnuget
+      if: github.event.pull_request.base.ref == 'main'
+      working-directory: ./src
+      run: dotnet nuget push ${{ steps.nupkgpath.outputs.NUPKG_PATH }} --api-key ${{ secrets.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json
